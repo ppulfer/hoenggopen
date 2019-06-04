@@ -1,15 +1,21 @@
-﻿namespace hoenggopen.Model
+﻿using System.Collections.Generic;
+
+namespace hoenggopen.Model
 {
     public class Team
     {
+        public Team()
+        {
+            Matches = new List<Match>();
+        }
+
         public int Id { get; set; }
-        public string Name { get; set; }
-        public Player Player1 { get; set; }
-        public Player Player2 { get; set; }
+
+        public IList<Match> Matches { get; }
 
         public override string ToString()
         {
-            return $"Team: {Name} Player1: {Player1} Player2: {Player2}";
+            return $"Team: {Id}";
         }
     }
 }

@@ -7,12 +7,14 @@ namespace hoenggopen.Model
     {
         public Tournament()
         {
-            Participants = new List<Player>();
             Teams = new List<Team>();
+            Games = new List<Game>();
         }
+
         public Schedule Schedule { get; set; }
-     
-        public IList<Player> Participants { get; }
+
+        public IList<Game> Games { get; }
+
         public IList<Team> Teams { get; }
     }
 }

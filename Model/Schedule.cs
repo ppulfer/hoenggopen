@@ -4,6 +4,10 @@ namespace hoenggopen.Model
 {
     public class Schedule
     {
-        public ICollection<Match> Matches { get; set; }
+        public Schedule()
+        {
+            Matches = new List<Match>();
+        }
+        public List<Match> Matches { get; set; }
     }
 }
