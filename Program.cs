@@ -16,15 +16,14 @@ namespace hoenggopen
         public static void Main(string[] args)
         {
             CreateTournament();
-
-
+            
             CreateWebHostBuilder(args).Build().Run();
         }
 
         private static void CreateTournament(
-            int numberOfPlayers = 18,
+            int numberOfPlayers = 20,
             int numberOfGames = 4,
-            int gameDurationInMinutes = 15)
+            int gameDurationInMinutes = 20)
         {
             Tournament tournament = new Tournament();
             tournament.Games.Add(new Game {Id = 1, Name = "PingPong"});
@@ -135,9 +134,9 @@ namespace hoenggopen
                     }
                 }
 
-                if (tempTime.Hour == 12 && tempTime.Minute == 45)
+                if (tempTime.Hour == 13 && tempTime.Minute == 00)
                 {
-                    tempTime = tempTime.AddMinutes(15);
+                    tempTime = tempTime.AddMinutes(20);
                 }
 
                 tempTime = tempTime.AddMinutes(gameDurationInMinutes);
@@ -174,13 +173,12 @@ namespace hoenggopen
                     }
                 }
 
-                if (tournament.Schedule.Matches.Any(x => x.Game == null))
+                if (tournament.Teams.Any(x => x.Matches.Count != 8))
                 {
-                    Console.WriteLine("noo");
+                    Console.WriteLine("Not all have 8 Matches");
                     continue;
                 }
-
-                //Conditions
+                    //Conditions
                 if (tournament.Teams.Any(y =>
                     y.Matches.Select(k => k.Game).GroupBy(x => x.Id).Any(z => z.Count() != 2)))
                 {
@@ -188,7 +186,23 @@ namespace hoenggopen
                 }
                 else
                 {
-                    break;
+                    var random = new Random();
+                    while (tournament.Schedule.Matches.Any(x => x.Game == null))
+                    {
+                        foreach (var game in tournament.Games)
+                        {
+                            var match = tournament.Schedule.Matches.FirstOrDefault(x => x.Game == null);
+                            if (match != null)
+                            {
+                                match.Game = game;
+                                match.Team1.Matches.Add(match);
+                                match.Team2.Matches.Add(match);
+                            }
+                        }
+                    }
+
+                    if(tournament.Schedule.Matches.All(match => match.Game != null))
+                        break;
                 }
             }
         }
